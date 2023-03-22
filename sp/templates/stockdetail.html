@@ -232,12 +232,7 @@
           </div>
         </div>
         <div class="detailgraphBox">
-          <div class="box">
-            <div class="cardHeader">
-              <h2>Stock Close Values</h2>
-            </div>
-            <canvas id="earnings"></canvas>
-          </div>
+          <div class="box" id="plotMeBaby"></div>
           <div class="stockdetails">
             <div class="stockreadings">
               <table>
@@ -388,6 +383,7 @@
     <script src="../static/script/main.js"></script>
     <script src="../static/script/mychart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
     <script>
       // Menu Toggle
       let toggle = document.querySelector(".toggle");
