@@ -23,7 +23,7 @@ def stock(request):
 
             # Create a dictionary with the stock data
             data = {"close_value": close_values, "date": dates, "stock": query}
-            print(data)
+            # print(data)
 
             # # Convert the dictionary to a JSON string
             # json_data = json.dumps(data)
