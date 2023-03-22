@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="../static/css/style1.css" />
+    <link rel="stylesheet" type="text/css" href="../../static/css/style1.css" />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -25,8 +26,8 @@
               title="Close Modal"
               >&times;</span
             >
-            <form method="post" action="accounts/login">
-              {% csrf_token %}
+            {% csrf_token %}
+            <form method="post" action="/accounts/login">
               <input
                 type="email"
                 name="email"
@@ -119,7 +120,7 @@
         <li>
           <a href="#">
             <span class="icon"
-              ><img src="../static/img/logo.png" alt=""
+              ><img src="../../static/img/logo.png" alt=""
             /></span>
             <span class="title">StockSight</span>
           </a>
@@ -141,11 +142,6 @@
               <span class="reg">Login/Signup</span>
             </a>
           </li>
-          <!-- <li>
-                    <a href="#">
-                        <span class="reg">SignUp</span>
-                    </a>
-                </li> -->
         </ul>
       </div>
     </div>
@@ -207,18 +203,13 @@
             <form method="post" action="stock/">
               {% csrf_token %}
               <label>
-                <input type="text" name="query" placeholder="Search here" />
+                <input type="search" name="query" placeholder="Search here" />
                 <ion-icon name="search-outline"></ion-icon>
               </label>
             </form>
           </div>
-          <!-- userImg -->
-          <!-- <div class="user">
-                    <img src="img/user.jpg">
-                </div> -->
         </div>
 
-        <!-- Charts -->
         <div class="cardBox">
           <div class="card">
             <div>
@@ -226,106 +217,27 @@
               <div class="price">60,261.18</div>
               <div class="today">Today: +303.15 (0.51%)</div>
             </div>
-            <!-- <div class="iconBx">
-                        <ion-icon name="eye-outline"></ion-icon>
-                    </div> -->
-          </div>
-        </div>
-        <div class="detailgraphBox">
-          <div class="box" id="plotMeBaby"></div>
-          <div class="stockdetails">
-            <div class="stockreadings">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Prev Close</td>
-                    <td>924.45</td>
-                  </tr>
-                  <tr>
-                    <td>Open</td>
-                    <td>939.70</td>
-                  </tr>
-                  <tr>
-                    <td>Close</td>
-                    <td>924.45</td>
-                  </tr>
-                  <tr>
-                    <td>Day's Range</td>
-                    <td>939.70 - 123.34</td>
-                  </tr>
-                  <tr>
-                    <td>Year's Range</td>
-                    <td>618.25 - 123.43</td>
-                  </tr>
-                  <tr>
-                    <td>Volume</td>
-                    <td>970.00</td>
-                  </tr>
-                  <tr>
-                    <td>Fac x</td>
-                    <td>15.60</td>
-                  </tr>
-                  <tr>
-                    <td>Fac y</td>
-                    <td>2.87T</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="stockreadings">
-              <table>
-                <tbody>
-                  <tr>
-                    <td>Market Cap</td>
-                    <td>924.45T</td>
-                  </tr>
-                  <tr>
-                    <td>P.E Ratio</td>
-                    <td>939.70</td>
-                  </tr>
-                  <tr>
-                    <td>EPS</td>
-                    <td>924.45</td>
-                  </tr>
-                  <tr>
-                    <td>Divident Yield</td>
-                    <td>939.70</td>
-                  </tr>
-                  <tr>
-                    <td>Target EST</td>
-                    <td>618.25</td>
-                  </tr>
-                  <tr>
-                    <td>Fac x</td>
-                    <td>15.60</td>
-                  </tr>
-                  <tr>
-                    <td>Fac y</td>
-                    <td>2.87T</td>
-                  </tr>
-                  <tr>
-                    <td>Fac z</td>
-                    <td>15.60</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
 
-        <form method="post" action="{% url 'analysis' %}">
-          {% csrf_token %}
-          <!-- ... form fields ... -->
-          <input type="hidden" id="query" name="query" value="{{ stock }}" />
-          <button type="submit" class="analyse-btn">Analyse</button>
-        </form>
+        <!-- Charts -->
+        <div class="graphBox">
+          <div class="box">
+            <div class="cardHeader">
+              <h2>{{ stock }} Graph</h2>
+            </div>
+            <img src="{% static 'images/outputs/lstm/graph1.png' %}" />
+          </div>
+        </div>
 
-        <form method="post" action="{% url 'lstm' %}">
-          {% csrf_token %}
-          <!-- ... form fields ... -->
-          <input type="hidden" id="query" name="query" value="{{ stock }}" />
-          <button type="submit" class="analyse-btn">Run LSTM</button>
-        </form>
+        <div class="graphBox reveal">
+          <div class="box">
+            <div class="cardHeader reveal">
+              <h2>{{ stock }} Graph</h2>
+            </div>
+            <img src="{% static 'images/outputs/lstm/graph2.png' %}" />
+          </div>
+        </div>
 
         <div class="details reveal">
           <div class="popularstocks">
@@ -387,10 +299,9 @@
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.2.0/dist/chart.umd.min.js"></script>
-    <script src="../static/script/main.js"></script>
-    <script src="../static/script/mychart.js"></script>
+    <script src="../../static/script/main.js"></script>
+    <script src="../../static/script/mychart.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
     <script>
       // Menu Toggle
       let toggle = document.querySelector(".toggle");
@@ -430,51 +341,6 @@
           }
         }
       }
-
-      var trace = {
-        type: "scatter",
-        mode: "lines",
-        name: "AAPL High",
-        x: eval("{{date|safe}}"),
-        y: eval("{{close_value|safe}}"),
-        line: { color: "#17BECF" },
-      };
-
-      var data = [trace];
-
-      var layout = {
-        title: "Stock Close Values",
-        xaxis: {
-          autorange: true,
-          range: ["2015-02-17", "2017-02-16"],
-          rangeselector: {
-            buttons: [
-              {
-                count: 1,
-                label: "1m",
-                step: "month",
-                stepmode: "backward",
-              },
-              {
-                count: 6,
-                label: "6m",
-                step: "month",
-                stepmode: "backward",
-              },
-              { step: "all" },
-            ],
-          },
-          rangeslider: { range: ["2015-02-17", "2017-02-16"] },
-          type: "date",
-        },
-        yaxis: {
-          autorange: true,
-          range: [86.8700008333, 138.870004167],
-          type: "linear",
-        },
-      };
-
-      Plotly.newPlot("plotMeBaby", data, layout);
     </script>
   </body>
 </html>

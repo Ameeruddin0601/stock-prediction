@@ -116,6 +116,232 @@ def analysis(request):
     context = {'stock': ticker,'price': round(price, 3), 'max_52': max_52, "min_52": min_52}
     return render(request, 'display.html', context)
 
+def calclstm(request):
+    ## todo: show progress bar to peeps ##
+    return render(request, 'lstm.html')
+
+def lstm(request):
+    if request.method == 'GET':
+        query = request.GET['query']
+    else:
+        query = request.POST['query']
+    ### Hang request and wait till your cpu pops some corn  ###
+    ### Data Collection
+    RANGE = ('2018-01-01','2022-08-31')
+    STOCK = query
+
+    import yahoo_fin.stock_info as si
+    import pandas as pd
+
+
+    # Creating Empty DF
+    dates = pd.date_range(RANGE[0],RANGE[1])
+    emptyDF = pd.DataFrame(index=dates)
+
+
+    # Historical Data
+    hist_data = si.get_data(STOCK,start_date=RANGE[0],end_date=RANGE[1])
+
+    # removing ticker col
+    hist_data = hist_data.iloc[:,:-1]
+
+    data = emptyDF.join(hist_data)
+
+    # Droping Na
+    data = data.dropna()
+
+    print(data)
+    # # Income Statement
+    # i_data = si.get_income_statement(TICKER)
+    # Transforming and Sorting Data wise
+    # i_data = i_data.transpose()[::-1]
+    # data = data.join(i_data)
+
+    # data.iloc[:,6:]=data.iloc[:,6:].ffill()
+    # data.iloc[:,6:]=data.iloc[:,6:].bfill()
+
+
+    # data.dropna(how='all', axis=1, inplace=True)
+    # data = data.dropna(how='any')
+    # data.to_csv('data.csv')
+
+    # Extracting Close
+    close = data.reset_index()['close']
+    print(close)
+    print(close.shape)
+
+    # Plotting The Graph
+    import matplotlib.pyplot as plt
+    close.plot(title="Stock Price")
+    plt.xlabel("nth day")
+    plt.ylabel("INR")
+
+
+    # Scaling using MinMaxScaler
+    from sklearn.preprocessing import MinMaxScaler
+
+    scaler=MinMaxScaler(feature_range=(0,1))
+
+    close = scaler.fit_transform(close.values.reshape(-1,1))
+
+    print(close)
+
+    ##splitting dataset into train and test split
+    training_size=int(len(close)*0.70)
+
+    test_size=len(close)-training_size
+
+    print(training_size,test_size)
+
+    train_data,test_data=close[0:training_size,:],close[training_size:len(close),:1]
+
+
+    # convert an array of values into a dataset matrix
+
+    import numpy as np
+    def create_dataset(dataset, time_step=1):
+        dataX, dataY = [], []
+        for i in range(len(dataset)-time_step-1):
+            a = dataset[i:(i+time_step), 0]   ###i=0, 0,1,2,3-----99   100 
+            dataX.append(a)
+            dataY.append(dataset[i + time_step, 0])
+        return np.array(dataX), np.array(dataY)
+
+
+    # reshape into X=t,t+1,t+2,t+3 and Y=t+4
+    time_step = 100
+    X_train, y_train = create_dataset(train_data, time_step)
+    X_test, ytest = create_dataset(test_data, time_step)
+
+    print(X_train.shape)
+    print(y_train.shape)
+
+    print(X_test.shape)
+    print(ytest.shape)
+
+
+    # reshape input to be [samples, time steps, features] which is required for LSTM
+    X_train =X_train.reshape(X_train.shape[0],X_train.shape[1] , 1)
+    X_test = X_test.reshape(X_test.shape[0],X_test.shape[1] , 1)
+
+
+    ### Create the Stacked LSTM model
+    import os
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+    from tensorflow.keras.models import Sequential
+    from tensorflow.keras.layers import Dense
+    from tensorflow.keras.layers import LSTM
+
+    model=Sequential()
+    model.add(LSTM(50,return_sequences=True,input_shape=(100,1)))
+    model.add(LSTM(50,return_sequences=True))
+    model.add(LSTM(50))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error',optimizer='adam')
+
+
+    model.summary()
+
+    model.fit(X_train,y_train,validation_data=(X_test,ytest),epochs=100,batch_size=64,verbose=1)
+
+
+    ### Lets Do the prediction and check performance metrics
+    train_predict=model.predict(X_train)
+    test_predict=model.predict(X_test)
+
+    ##Transformback to original form
+    train_predict=scaler.inverse_transform(train_predict)
+    test_predict=scaler.inverse_transform(test_predict)
+
+
+    ### Calculate RMSE performance metrics
+    import math
+    from sklearn.metrics import mean_squared_error
+    math.sqrt(mean_squared_error(y_train,train_predict))
+
+
+    ### Test Data RMSE
+    math.sqrt(mean_squared_error(ytest,test_predict))
+
+
+    ### Plotting 
+    # shift train predictions for plotting
+    look_back=100
+    trainPredictPlot = np.empty_like(close)
+    trainPredictPlot[:, :] = np.nan
+    trainPredictPlot[look_back:len(train_predict)+look_back, :] = train_predict
+    # shift test predictions for plotting
+    testPredictPlot = np.empty_like(close)
+    testPredictPlot[:, :] = np.nan
+    testPredictPlot[len(train_predict)+(look_back*2)+1:len(close)-1, :] = test_predict
+    # plot baseline and predictions
+    plt.plot(scaler.inverse_transform(close))
+    plt.plot(trainPredictPlot)
+    plt.plot(testPredictPlot)
+    plt.savefig('sp/static/images/outputs/lstm/graph1.png')
+
+    len(test_data)
+
+    o = len(test_data) - 100
+    x_input=test_data[o:].reshape(1,-1)
+    x_input.shape
+
+
+    temp_input=list(x_input)
+    temp_input=temp_input[0].tolist()
+
+    temp_input
+
+
+    # demonstrate prediction for next 10 days
+    from numpy import array
+
+    lst_output=[]
+    n_steps=100
+    i=0
+    while(i<30):
+        
+        if(len(temp_input)>100):
+            #print(temp_input)
+            x_input=np.array(temp_input[1:])
+            print("{} day input {}".format(i,x_input))
+            x_input=x_input.reshape(1,-1)
+            x_input = x_input.reshape((-1, n_steps, 1))
+            #print(x_input)
+            yhat = model.predict(x_input, verbose=0)
+            print("{} day output {}".format(i,yhat))
+            temp_input.extend(yhat[0].tolist())
+            temp_input=temp_input[1:]
+            #print(temp_input)
+            lst_output.extend(yhat.tolist())
+            i=i+1
+        else:
+            x_input = x_input.reshape((-1, n_steps,1))
+            yhat = model.predict(x_input, verbose=0)
+            print(yhat[0])
+            temp_input.extend(yhat[0].tolist())
+            print(len(temp_input))
+            lst_output.extend(yhat.tolist())
+            i=i+1
+        
+
+    print(lst_output)
+
+    day_new=np.arange(1,101)
+    day_pred=np.arange(101,131)
+
+    import matplotlib.pyplot as plt
+
+    c = len(close)-100
+    plt.plot(day_new,scaler.inverse_transform(close[c:]))
+    plt.plot(day_pred,scaler.inverse_transform(lst_output))
+    plt.savefig('sp/static/images/outputs/lstm/graph2.png')
+
+    context = {'stock': query}
+
+    return render(request, 'lstm.html', context)
+
 
 ## ∨∨∨∨∨∨∨∨∨∨∨∨∨∨ What's this for ∨∨∨∨∨∨∨∨∨∨∨∨∨∨ ##
 def analysis1(request):
