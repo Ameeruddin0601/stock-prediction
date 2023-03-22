@@ -25,4 +25,5 @@ urlpatterns = [
     path('stocklist/', views.stocklist, name="stocklist"),
     path('stockdetail/', views.stockdetail, name="stockdetail"),
     path('analysis/',include('stock.urls'), name="analysis"),
+    path('portfolio/', views.portfolio, name="portfolio"),
 ]

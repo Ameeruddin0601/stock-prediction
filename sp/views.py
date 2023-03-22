@@ -11,3 +11,6 @@ def stocklist(request):
 
 def stockdetail(request):
     return render(request,'stockdetail.html')
+
+def portfolio(request):
+    return render(request,'portfolio.html')
