@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../static/css/style1.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/style1.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <title>Stocksight</title>
 
@@ -17,9 +17,10 @@
                     <h2>LOGIN</h2>
                     <span onclick="document.getElementById('id01').style.display='none'" class="close"
                         title="Close Modal">&times;</span>
-                    <form method="post">
-                        <input type="email" class="input-box" placeholder="Enter Email ID" required>
-                        <input type="password" class="input-box" placeholder="Enter Password" required>
+                    <form method="post" action="accounts/login">
+                        {% csrf_token %}
+                        <input type="email" name="email" class="input-box" placeholder="Enter Email ID" required>
+                        <input type="password" name="password" class="input-box" placeholder="Enter Password" required>
                         <div class="separate"></div>
                         <button type="submit" class="submit-btn btn-prime">Submit</button>
                         <input type="checkbox"><span>Remember Me</span>
@@ -40,10 +41,12 @@
                     <h2>REGISTER</h2>
                     <span onclick="document.getElementById('id02').style.display='none'" class="close"
                         title="Close Modal">&times;</span>
-                    <form method="post">
-                        <input type="text" class="input-box" placeholder="Enter Your Name" required>
-                        <input type="email" class="input-box" placeholder="Enter Email ID" required>
-                        <input type="password" class="input-box" placeholder="Enter Password" required>
+                    <form method="post" action="/accounts/register">
+                        {% csrf_token %}
+                        <input type="text" name="username" class="input-box" placeholder="Enter Your Username" required>
+                        <input type="email" name="email" class="input-box" placeholder="Enter Email ID" required>
+                        <input type="password" name="password" class="input-box" placeholder="Enter Password" required>
+                        <input type="password" name="confirm_password" class="input-box" placeholder="Re-enter Password" required>
                         <div class="separate"></div>
                         <button type="submit" class="submit-btn btn-prime">Submit</button>
                         <input type="checkbox"><span>Remember Me</span>
@@ -59,7 +62,7 @@
         <ul>
             <li>
                 <a href="#">
-                    <span class="icon"><img src="img/logo.png" alt=""></span>
+                    <span class="icon"><img src="../static/img/logo.png" alt=""></span>
                     <span class="title">StockSight</span>
                 </a>
             </li>
@@ -92,8 +95,7 @@
     <div class="container">
         <div class="navigation">
             <ul>
-                <li>
-                </li>
+                <li></li>
                 <li>
                     <a href="/">
                         <span class="icon"><ion-icon name="home-outline"></ion-icon></span>
@@ -137,115 +139,38 @@
                 </div>
                 <!-- search -->
                 <div class="search">
-                    <form method="post" action="../../stock/">
+                    <form method="post" action="stock/">
                         {% csrf_token %}
-                        <label>                            
-                            <input type="search" name="query" placeholder="Search here">
+                        <label>
+                            <input type="text" name="query" placeholder="Search here">
                             <ion-icon name="search-outline"></ion-icon>
                         </label>
                     </form>
                 </div>
-            </div>
-
-            <div class="cardBox">
-                <div class="card">
-                    <div>
-                        <div class="stockname">Sensex</div>
-                        <div class="price">60,261.18</div> 
-                        <div class="today">Today: +303.15 (0.51%)</div> 
-
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="stockname">Nifty 50</div>
-                        <div class="price">60,261.18</div>
-                        <div class="today">Today: +303.15 (0.51%)</div> 
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="stockname">Nifty Bank</div>
-                        <div class="price">60,261.18</div>
-                        <div class="today">Today: +303.15 (0.51%)</div> 
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="stockname">Nifty Midcap 100</div>
-                        <div class="price">60,261.18</div>
-                        <div class="today-f">Today: -31.75 (-0.10%)</div> 
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="stockname">Gold</div>
-                        <div class="price">60,261.18</div>
-                        <div class="today">Today: +303.15 (0.51%)</div> 
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div>
-                        <div class="stockname">Silver</div>
-                        <div class="price">60,261.18</div>
-                        <div class="today">Today: +303.15 (0.51%)</div> 
-                    </div>
-                </div>
+                <!-- userImg -->
+                <!-- <div class="user">
+                    <img src="img/user.jpg">
+                </div> -->
             </div>
 
             <!-- Charts -->
-            <div class="graphBox">
-                <div class="details">
-                    <div class="popularstocks">
-                        <div class="cardHeader">
-                            <h2>All Stocks</h2>
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>Stock</td>
-                                    <td>Symbol</td>
-                                    <td>Price</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr data-href="stockdetail.html">
-                                    <td>Tata Power</td>
-                                    <td>TATAPOWER.NS</td>
-                                    <td>112</td>
-                                </tr>
-                                <tr data-href="stockdetail.html">
-                                    <td>Asian Paints</td>
-                                    <td>ASIANPAINTS.NS</td>
-                                    <td>2000</td>
-                                </tr>
-                                <tr data-href="stockdetail.html">
-                                    <td>Dr Reddy</td>
-                                    <td>DRREDDY.NS</td>
-                                    <td>1200</td>                                    
-                                </tr>
-                                <tr data-href="stockdetail.html">
-                                    <td>Wipro</td>
-                                    <td>WIPRO.NS</td>
-                                    <td>321</td>
-                                </tr>
-                                <tr data-href="stockdetail.html">
-                                    <td>Tata Steel</td>
-                                    <td>TATASTEEL.NS</td>
-                                    <td>1200</td>                                    
-                                </tr>
-                                
-                            </tbody>
-                        </table>
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="message">Registration Successful!</div>
+                        <div class="message-desc">You can login now!</div> 
                     </div>
-
+                    <!-- <div class="iconBx">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </div> -->
                 </div>
             </div>
+            
+            <form method="post" action="{% url 'analysis' %}">
+                {% csrf_token %}
+                <!-- ... form fields ... -->
+                <button type="submit" class="analyse-btn">Analyse</button>
+            </form>
 
             <footer>
                 <p>Copyright &copy; 2022, StockSight. All Rights Reserved.</p>
@@ -285,6 +210,23 @@
                 window.location.href = this.dataset.href;
             });
         });
+
+        window.addEventListener("scroll",reveal);
+        function reveal(){
+            var reveals = document.querySelectorAll('.reveal');
+
+            for(var i=0; i<reveals.length;i++){
+                var windowheight = window.innerHeight;
+                var revealtop = reveals[i].getBoundingClientRect().top;
+                var revealpoint = 150;
+                if(revealtop < windowheight - revealpoint){
+                    reveals[i].classList.add('now');
+                }
+                else{
+                    reveals[i].classList.remove('now');
+                }
+            }
+        }          
     </script>
 </body>
 </html>

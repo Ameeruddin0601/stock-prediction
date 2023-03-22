@@ -976,6 +976,22 @@ padding: 40px 0;
 text-align: center;
 }
 
+.cardBox .card .message
+{
+    position: relative;
+    font-weight: 500;
+    font-size: 1.5em;
+    color: rgb(1, 178, 1);
+}
+
+.cardBox .card .message-desc
+{
+    position: relative;
+    font-weight: 200;
+    font-size: 1.1em;
+    color: rgb(48, 48, 48);
+}
+
 
 /* responsive */
 @media(max-width:991px){
