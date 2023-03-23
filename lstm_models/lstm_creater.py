@@ -13,7 +13,7 @@ Original file is located at
 import pickle
 ### Data Collection
 RANGE = ('2015-01-01','2023-03-22')
-STOCK = 'AXISBANK.NS'
+STOCK = 'ASIANPAINT.NS'
 
 import yahoo_fin.stock_info as si
 import pandas as pd
@@ -128,6 +128,6 @@ model.fit(X_train,y_train,validation_data=(X_test,ytest),epochs=100,batch_size=6
 
 
 # Pickle the model
-with open(f"{STOCK}.pkl", 'wb') as f:
+with open(f"lstm_models/{STOCK}.pkl", 'wb') as f:
     pickle.dump(model, f)
 
