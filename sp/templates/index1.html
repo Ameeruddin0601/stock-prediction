@@ -211,7 +211,7 @@
           <div class="card">
             <div>
               <div class="stockname">Sensex</div>
-             
+
               <div class="price">{{ sensex }}</div>
               <div class="today">▲ +139.91 (+0.24%) today</div>
             </div>
@@ -269,7 +269,7 @@
             <canvas id="earnings"></canvas>
           </div>
           <div class="details">
-            <div class="popularstocks">
+            <!-- <div class="popularstocks">
               <div class="cardHeader">
                 <h2>Popular Stocks</h2>
                 <a href="/stocklist" class="btn">View All</a>
@@ -312,8 +312,58 @@
               </table>
             </div>
           </div>
-        </div>
+        </div> -->
+            <!-- this is new00 -->
 
+            <div class="popularstocks">
+              <div class="cardHeader">
+                <h2>All Stocks</h2>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <td>Stock</td>
+                    <td>Symbol</td>
+                    <td>Price</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-href="stockdetail.html">
+                    <td>Tata Power</td>
+                    <td>TATAPOWER.NS</td>
+                    <td>{{tatapower}}</td>
+                    <!-- <td><a href="#" class="btn">Add</a></td> -->
+                  </tr>
+                  <tr data-href="stockdetail.html">
+                    <td>MRF</td>
+                    <td>MRF.NS</td>
+                    <td>{{mrf}}</td>
+                    <!-- <td><a href="#" class="btn">Add</a></td> -->
+                  </tr>
+                  <tr data-href="stockdetail.html">
+                    <td>Dr Reddy</td>
+                    <td>DRREDDY.NS</td>
+                    <td>{{drreddy}}</td>
+                    <!-- <td><a href="#" class="btn">Add</a></td> -->
+                  </tr>
+                  <tr data-href="stockdetail.html">
+                    <td>Wipro</td>
+                    <td>WIPRO.NS</td>
+                    <td>{{wipro}}</td>
+                    <!-- <td><a href="#" class="btn">Add</a></td> -->
+                  </tr>
+                  <tr data-href="stockdetail.html">
+                    <td>Tata Steel</td>
+                    <td>TATASTEEL.NS</td>
+                    <td>{{tatasteel}}</td>
+                    <!-- <td><a href="#" class="btn">Add</a></td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!-- till here -->
         <div class="about reveal">
           <div class="cardBox">
             <div class="box">
