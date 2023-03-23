@@ -81,7 +81,7 @@ def portfolio(request):
     prices
     index
     total
-    fig, ax = plt.subplots(figsize=(16,8))
+    fig, ax = plt.subplots()
 
     ax.set_facecolor('white')
     ax.figure.set_facecolor('white')
