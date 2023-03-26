@@ -192,6 +192,6 @@ def portfolio(request):
 
 
     ## side bar 
-    context = {'tatapower':tatapower,"tatasteel":tatasteel,"drreddy":drreddy,'wipro':wipro,"mrf":mrf}
+    context = {'tatapower':tatapower,"tatasteel":tatasteel,"drreddy":drreddy,'wipro':wipro,"mrf":mrf,"pvol":p_vol[4296]*100,"pret":p_ret[4296]*100,"wt":p_wt[4296]}
 
     return render(request,'portfolio.html',context)

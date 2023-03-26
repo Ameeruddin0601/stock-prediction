@@ -259,12 +259,29 @@
         <div class="graphBox">
           <div class="box">
             <div class="cardHeader">
-              <h2>Sensex Graph</h2>
+              <h2>Volatality Graph</h2>
             </div>
-            <canvas id="earnings"></canvas>
+            <!-- <canvas id="earnings"></canvas> -->
+          <img src="{% static 'images/outputs/portfolio/graph3.png' %}" />
+          </div>
+          </div>
+        <div class="graphBox">
+          <div class="box">
+            <div class="cardHeader">
+              <h2>Close Prices</h2>
+            </div>
+            <!-- <canvas id="earnings"></canvas> -->
+          <img src="{% static 'images/outputs/portfolio/graph2.png' %}" />
           </div>
         </div>
-
+        <div class="cardBox">
+          <div class="card">
+          <div class="price"><strong>Volatality:</strong> {{pvol}}, </div>
+          </div>
+          <div class="card"><div class="price"><strong>Return: </strong>{{pret}}, </div></div>
+          
+          <div class="card"><div class="price"><strong>Weights: </strong>{{wt}}</div></div>
+        </div>
         <footer>
           <p>Copyright &copy; 2022, StockSight. All Rights Reserved.</p>
         </footer>
